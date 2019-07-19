@@ -34,6 +34,8 @@ export class AddressComponent implements OnInit, ControlValueAccessor, Validator
 
   writeValue(val: any) {
     console.log('writeValue');
+    console.log(val);
+
     if (!val) {
       return;
     }
@@ -43,9 +45,11 @@ export class AddressComponent implements OnInit, ControlValueAccessor, Validator
 
   registerOnChange(fn: any) {
     console.log('On change');
-    this.addressFrom.valueChanges.subscribe(() => {
+    this.addressFrom.valueChanges.subscribe((value: any) => {
       console.log('changed');
-      fn();
+      console.log(value);
+      fn(value);
+      this.writeValue(value);
     });
   }
 
@@ -65,6 +69,8 @@ export class AddressComponent implements OnInit, ControlValueAccessor, Validator
 
   validate(c: AbstractControl): ValidationErrors | null {
     console.log('Basic Info validation', c);
-    return this.addressFrom.valid ? null : { invalidForm: { valid: false, message: 'basicInfoForm fields are invalid' } };
+    return this.addressFrom.valid
+      ? null
+      : { invalidForm: { valid: false, message: 'address fields are invalid' } };
   }
 }
